@@ -98,7 +98,6 @@ class arpGui:
 
     def addTarget(self, treeview, iter, *args):
         model=treeview.get_model()
-        i = map(int,iter)[0]
         iter = model.get_iter(iter)
         ip = model.get_value(iter, 0)
         self.arp.addipTarget(ip)
@@ -107,7 +106,6 @@ class arpGui:
 
     def remTarget(self, treeview, iter, *args):
         model=treeview.get_model()
-        i = map(int,iter)[0]
         iter = model.get_iter(iter)
         ip = model.get_value(iter, 0)
         self.arp.remipTarget(ip)
@@ -117,8 +115,7 @@ class arpGui:
 
     def statusPlugin(self, treeview, iter, *args):
         model=treeview.get_model()
-        #i = map(int,iter)[0]
-        #self.arp.addTarget(i)
+
         iter = model.get_iter(iter)
         enabled = model.get_value(iter, 0)
         name = model.get_value(iter, 1)
