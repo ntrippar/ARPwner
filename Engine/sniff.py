@@ -31,7 +31,7 @@ class sniff(threading.Thread):
                     if packet.p == 17:
                         udp = packet.data
                         if udp.dport == 53:
-                            self.dnsSpoof.analyze(udp.data)
+                            self.dnsSpoof.analyze(packet)
 
                 #plugin check and call
                 try:
