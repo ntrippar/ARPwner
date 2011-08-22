@@ -1,4 +1,5 @@
-import dpkt, socket
+import Libs.dpkt as dpkt
+import socket
 
 class objDomain(object):
     def __init__(self, dns, ip):
