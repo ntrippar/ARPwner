@@ -1,6 +1,6 @@
 Installation
 -----------
-    apt-get install python-pypcap
+apt-get install python-pypcap
 
 SSLstrip
 ----------
