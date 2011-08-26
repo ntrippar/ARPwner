@@ -5,7 +5,9 @@ from Engine import httpstrip
 from Engine.functions import macFormat, ipFormat
 from Engine import plugins
 from Engine import dnsSpoof
+from Engine import ifaces
 passwdList = None
+gladefile="main.glade"
 
 try:
  	import pygtk
@@ -18,6 +20,7 @@ try:
 except:
 	sys.exit(1)
 gtk.gdk.threads_init()
+
 
 class logger():
     def addInfo(self,service,host,user,passwd):
@@ -33,7 +36,6 @@ class arpGui:
         self.arp = None
         self.sniff = False
         self.httpspwn = httpstrip.run_server(self.logger)
-        return
 
     def addlistColumn(self, Object, title, columnId):
         column = gtk.TreeViewColumn(title, gtk.CellRendererText(), text=columnId)
@@ -51,7 +53,7 @@ class arpGui:
                     for target in self.arp.network:
                         self.networkList.append([target.ip])
 
-    def sniff(self,widget):
+    def startSniff(self,widget):
         if (self.iface != None):
             if (self.sniff.running == False):
                 self.sniff.running = True
@@ -59,8 +61,7 @@ class arpGui:
                 try:
                     self.sniff.start()
                 except:
-                    pass
-                    ##error handler
+                    messageBox("couldn't start the Pasive sniffing")
             else:
                 self.sniff.running = False
                 self.lblSniffing.set_text('Pasive sniffing: OFF')
@@ -126,8 +127,6 @@ class arpGui:
             self.plugins.enablePlugin(name)
             self.pluginsList.set_value(iter,0,True)
             
-        #self.targetsList.append([ip])
-        #self.networkList.remove(iter)
 
     def dnsRun(self,widget):
         if self.dnsSpoof.running == False:
@@ -138,7 +137,6 @@ class arpGui:
             self.lblDns.set_text('DNS spoofing: OFF')
 
     def showAbout(self,widget):
-        gladefile="main.glade"
         wTree=gtk.glade.XML(gladefile,"dialog")
         response = wTree.get_widget("dialog").run()
         if response == gtk.RESPONSE_DELETE_EVENT or response == gtk.RESPONSE_CANCEL:
@@ -150,13 +148,12 @@ class arpGui:
         In this function we are going to display the Main
         window and connect all the signals
         """
-        gladefile="main.glade"
         self.wTree=gtk.glade.XML(gladefile,"Main")
 
         dic = {"on_Main_destroy" : self.exit
             , "on_cmdIface_activate" : self.setIface
             , "on_cmdScan_activate" : self.scanNetwork
-            , "on_cmdSniff_activate" : self.sniff
+            , "on_cmdSniff_activate" : self.startSniff
             , "on_cmdArp_activate" : self.arpPoison
             , "on_cmdStrip_activate": self.httpStrip
             , "on_lstNetwork_row_activated": self.addTarget
@@ -243,41 +240,55 @@ class arpGui:
 
     def setIface(self,widget):
         result,iface = ifaceDialog().run()
-        if (result == gtk.RESPONSE_OK and len(iface)>1):
+        if (result == gtk.RESPONSE_OK and iface != None):
             self.iface = iface
             try:
                 self.arp = arp.ARP(self.iface)
                 self.sniff = sniff.sniff(self.iface, self.logger, self.plugins,self.dnsSpoof)
+                self.startSniff(None)
             except(OSError):
-                ##error handler
+                messageBox('Error while creating the class sniff and arp on setIface function')
                 self.iface = None
-        else:
-            pass ##error handler
+        elif iface == None:
+            messageBox('Error setting the iface')
 
 
 class ifaceDialog:
     """This class shows the iface dialog"""
 
-    def __init__(self):
-        self.gladefile="main.glade"
-		
     def run(self):
-        self.wTree = gtk.glade.XML(self.gladefile, "ifaceDlg")
+        self.wTree = gtk.glade.XML(gladefile, "ifaceDlg")
         self.dlg = self.wTree.get_widget("ifaceDlg")
-        self.iface = self.wTree.get_widget("txtIface")
+
+        self.iface = self.wTree.get_widget("cmbIface")
+        self.lstIface = gtk.ListStore(str)
+
+        interfaces = ifaces.getIfaces().interfaces
+
+        for iface in interfaces:
+            self.lstIface.append([iface.name])
+            #print iface.name, iface.ip , iface.hwaddr, iface.gateway, iface.gwhwaddr
+
+        self.iface.set_model(self.lstIface)
+        cell = gtk.CellRendererText()
+        self.iface.pack_start(cell)
+        self.iface.add_attribute(cell,'text',0)
+        self.iface.set_active(0)
+
         self.result = self.dlg.run()
-        self.iface = self.iface.get_text()
+        ifname = self.iface.get_active_text()
+        self.iface = None
         self.dlg.destroy()
-        return self.result,self.iface
+        for iface in interfaces:
+            if iface.name == ifname:
+                return self.result, iface
+        return None,None
 
 class scanDialog:
     """This class shows the scan dialog"""
-
-    def __init__(self):
-        self.gladefile="main.glade"
 		
     def run(self):
-        self.wTree = gtk.glade.XML(self.gladefile, "scanDlg")
+        self.wTree = gtk.glade.XML(gladefile, "scanDlg")
         self.dlg = self.wTree.get_widget("scanDlg")
         self.ip1 = self.wTree.get_widget("txtIp1")
         self.ip2 = self.wTree.get_widget("txtIp2")
@@ -289,12 +300,9 @@ class scanDialog:
 
 class dnsDialog:
     """This class shows the DNS add dialog"""
-
-    def __init__(self):
-        self.gladefile="main.glade"
 		
     def run(self):
-        self.wTree = gtk.glade.XML(self.gladefile, "dnsDlg")
+        self.wTree = gtk.glade.XML(gladefile, "dnsDlg")
         self.dlg = self.wTree.get_widget("dnsDlg")
         self.domain = self.wTree.get_widget("txtDomain")
         self.ip = self.wTree.get_widget("txtIp")
@@ -303,6 +311,20 @@ class dnsDialog:
         self.ip = self.ip.get_text()
         self.dlg.destroy()
         return self.result,self.domain,self.ip
+
+class messageBox:
+    def __init__(self, lblmsg = '',dlgtitle = 'Error!'):
+        self.wTree = gtk.glade.XML(gladefile, "msgBox")
+        self.dlg = self.wTree.get_widget('msgBox')
+        self.lblError = self.wTree.get_widget('lblError')
+        self.dlg.set_title(dlgtitle)
+        self.lblError.set_text(lblmsg)
+        handlers = {'on_cmdOk_clicked':self.done}
+        self.wTree.signal_autoconnect(handlers)
+
+    def done(self,widget):
+        self.dlg.destroy()
+
 
 if __name__ == "__main__":
     if not os.geteuid() == 0:

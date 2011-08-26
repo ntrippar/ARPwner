@@ -18,7 +18,7 @@ class sniff(threading.Thread):
         self.iface = iface
         self.logger = logger
         self.dnsSpoof = dns
-        self.pc = pcap.pcap(self.iface)
+        self.pc = pcap.pcap(self.iface.name)
 
     def run(self):
         for ts, pkt in self.pc:

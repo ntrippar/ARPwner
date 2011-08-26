@@ -1,5 +1,6 @@
 import struct
 import socket
+import binascii
 
 def _inc_ipfield(addr, i):
 
@@ -22,9 +23,27 @@ def macFormat(addr):
         hwaddr = addr  
     return hwaddr
 
+def mactohex(addr):
+    try:
+        if len(addr) == 17:
+            addr =  ''.join(map(str,addr.split(':')[1:]))
+            return binascii.unhexlify(addr)
+        else:
+            return binascii.unhexlify(addr)
+    except:
+        return None
+
 def ipFormat(addr):
     try:
         addr = socket.inet_ntoa(addr)
     except(socket.error):
         addr = addr
     return addr
+
+def ipfromHex(ip):
+    try:
+        ip = struct.pack("<L", int(ip,16))
+        return socket.inet_ntoa(ip)
+    except:
+        return None
+

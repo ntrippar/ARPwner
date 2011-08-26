@@ -9,7 +9,7 @@
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">ARPwner 1.0</property>
     <property name="window_position">center</property>
-    <signal name="destroy" handler="on_Main_destroy" />
+    <signal name="destroy" handler="on_Main_destroy"/>
     <child>
       <widget class="GtkVBox" id="vbox2">
         <property name="visible">True</property>
@@ -36,7 +36,7 @@
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
                         <property name="use_stock">False</property>
-                        <signal name="activate" handler="on_cmdIface_activate" />
+                        <signal name="activate" handler="on_cmdIface_activate"/>
                         <child internal-child="image">
                           <widget class="GtkImage" id="image1">
                             <property name="visible">True</property>
@@ -53,7 +53,7 @@
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
                         <property name="use_stock">False</property>
-                        <signal name="activate" handler="on_cmdArp_activate" />
+                        <signal name="activate" handler="on_cmdArp_activate"/>
                         <child internal-child="image">
                           <widget class="GtkImage" id="image5">
                             <property name="visible">True</property>
@@ -72,7 +72,7 @@
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
                         <property name="use_stock">False</property>
-                        <signal name="activate" handler="on_cmdScan_activate" />
+                        <signal name="activate" handler="on_cmdScan_activate"/>
                         <child internal-child="image">
                           <widget class="GtkImage" id="image2">
                             <property name="visible">True</property>
@@ -89,7 +89,7 @@
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
                         <property name="use_stock">False</property>
-                        <signal name="activate" handler="on_cmdStrip_activate" />
+                        <signal name="activate" handler="on_cmdStrip_activate"/>
                         <child internal-child="image">
                           <widget class="GtkImage" id="image3">
                             <property name="visible">True</property>
@@ -106,7 +106,7 @@
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
                         <property name="use_stock">False</property>
-                        <signal name="activate" handler="on_cmdSniff_activate" />
+                        <signal name="activate" handler="on_cmdSniff_activate"/>
                         <child internal-child="image">
                           <widget class="GtkImage" id="image4">
                             <property name="visible">True</property>
@@ -123,7 +123,7 @@
                         <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">DNS Spoofing</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_cmdSpoof_activate" />
+                        <signal name="activate" handler="on_cmdSpoof_activate"/>
                       </widget>
                     </child>
                   </widget>
@@ -146,7 +146,7 @@
                 <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">About</property>
                 <property name="use_underline">True</property>
-                <signal name="activate" handler="on_cmdAbout_activate" />
+                <signal name="activate" handler="on_cmdAbout_activate"/>
               </widget>
             </child>
           </widget>
@@ -175,7 +175,7 @@
                       <widget class="GtkTreeView" id="lstNetwork">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <signal name="row_activated" handler="on_lstNetwork_row_activated" />
+                        <signal name="row_activated" handler="on_lstNetwork_row_activated"/>
                       </widget>
                     </child>
                   </widget>
@@ -201,7 +201,7 @@
                       <widget class="GtkTreeView" id="lstTargets">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <signal name="row_activated" handler="on_lstTargets_row_activated" />
+                        <signal name="row_activated" handler="on_lstTargets_row_activated"/>
                       </widget>
                     </child>
                   </widget>
@@ -277,7 +277,7 @@
                       <widget class="GtkTreeView" id="lstPlugins">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <signal name="row_activated" handler="on_lstPlugins_row_activated" />
+                        <signal name="row_activated" handler="on_lstPlugins_row_activated"/>
                       </widget>
                     </child>
                   </widget>
@@ -307,8 +307,8 @@
                       <widget class="GtkTreeView" id="lstDns">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <signal name="button_press_event" handler="on_lstDns_button_press_event" />
-                        <signal name="row_activated" handler="on_lstDns_row_activated" />
+                        <signal name="button_press_event" handler="on_lstDns_button_press_event"/>
+                        <signal name="row_activated" handler="on_lstDns_row_activated"/>
                       </widget>
                     </child>
                   </widget>
@@ -1370,18 +1370,70 @@ Public License instead of this License.  But first, please read
           </packing>
         </child>
         <child>
-          <widget class="GtkEntry" id="txtIface">
+          <widget class="GtkComboBox" id="cmbIface">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="invisible_char">•</property>
-            <property name="primary_icon_activatable">False</property>
-            <property name="secondary_icon_activatable">False</property>
-            <property name="primary_icon_sensitive">True</property>
-            <property name="secondary_icon_sensitive">True</property>
+            <property name="can_focus">False</property>
           </widget>
           <packing>
             <property name="expand">True</property>
             <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+  <widget class="GtkDialog" id="msgBox">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="title" translatable="yes">msgBox</property>
+    <property name="type_hint">dialog</property>
+    <property name="has_separator">True</property>
+    <child internal-child="vbox">
+      <widget class="GtkVBox" id="dialog-vbox4">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child internal-child="action_area">
+          <widget class="GtkHButtonBox" id="dialog-action_area4">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+            <child>
+              <widget class="GtkButton" id="cmdOk">
+                <property name="label">gtk-ok</property>
+                <property name="response_id">-5</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="can_default">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_action_appearance">False</property>
+                <property name="use_stock">True</property>
+                <signal name="clicked" handler="on_cmdOk_clicked"/>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkLabel" id="lblError">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="xpad">35</property>
+            <property name="ypad">17</property>
+          </widget>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
             <property name="position">2</property>
           </packing>
         </child>

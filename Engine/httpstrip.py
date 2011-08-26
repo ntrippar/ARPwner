@@ -315,25 +315,32 @@ class run_server(threading.Thread):
         infologger = logger
         self.port = port
         self.running = False
+
+    def enableForwarding(self):
+        if sys.platform == 'darwin':
+            pass
+        elif sys.platform[:5] == 'linux':
+            os.system('iptables -t nat -A PREROUTING -p tcp --destination-port 80 -j REDIRECT --to-port 1337')
+
+    def disableForwarding(self):
+        if sys.platform == 'darwin':
+            pass
+        elif sys.platform[:5] == 'linux':
+            os.system('iptables -t nat -D PREROUTING -p tcp --destination-port 80 -j REDIRECT --to-port 1337')
+
     def run(self):
         self.running = True
+        self.enableForwarding()
         server_class=ThreadedHTTPServer
         handler_class=SSLProxyHTTPHandler
         server_address = ('', self.port)
         self.httpd = server_class(server_address, handler_class)
         while (self.running):
             self.httpd.handle_request()
+
     def stop(self):
         self.running = False
+        self.disableForwarding()
         self._Thread__stop()
-
-
-#aa = run_server()
-#aa.running = True
-#aa.start()
-#time.sleep(20)
-#aa.stop()
-
-
 
 

