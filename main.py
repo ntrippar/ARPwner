@@ -82,7 +82,7 @@ class arpGui:
         try:
             self.arp.running = False
             self.sniff.running = False
-            if self.httpspwn.running = True:
+            if self.httpspwn.running == True:
                 self.httpspwn.stop()
             gtk.main_quit()
         except(AttributeError):
