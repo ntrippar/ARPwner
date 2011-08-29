@@ -6,6 +6,8 @@ usuario=
 user_name=
 session[username_or_email]=
 login=
+u_name=
+nick=
 [pass]
 pass=
 passwd=
@@ -16,3 +18,4 @@ pwd=
 user_pass=
 user_password=
 session[password]=
+p_word=

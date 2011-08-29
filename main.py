@@ -161,6 +161,7 @@ class arpGui:
             , "on_lstTargets_row_activated": self.remTarget
             , "on_lstPlugins_row_activated": self.statusPlugin
             , "on_lstDns_button_press_event": self.dnsHandler
+            , "on_lstPlugins_button_press_event":self.pluginHandler
             , "on_cmdSpoof_activate": self.dnsRun
             , "on_cmdAbout_activate": self.showAbout
             , "on_lstDns_row_activated": self.remDns}
@@ -216,6 +217,26 @@ class arpGui:
     def loadPlugins(self):
         for plugin in self.plugins.plugins:
             self.pluginsList.append([plugin.PROPERTY['ENABLED'],plugin.PROPERTY['NAME'],plugin.PROPERTY['DESC'], plugin.PROPERTY['AUTHOR']])
+
+    def pluginHandler(self,widget,event):
+        if event.button == 3:
+            menu = gtk.Menu()
+            add = gtk.MenuItem("Config")
+            add.show()
+            add.connect("activate",self.configPlugin)
+            menu.append(add)
+            menu.popup(None, None, None, event.button, event.time, None)
+
+    def configPlugin(self,widget):
+        model=self.lstPlugins.get_model()
+        entry1, entry2 =  self.lstPlugins.get_selection().get_selected()
+        name = entry1.get_value(entry2, 1)
+        for plugin in self.plugins.plugins:
+            if name == plugin.PROPERTY['NAME']:
+                try:
+                    plugin.configure().run()
+                except:
+                    pass
 
     def dnsHandler(self,widget,event):
         if event.button == 3:
