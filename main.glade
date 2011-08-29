@@ -9,7 +9,7 @@
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">ARPwner 1.0</property>
     <property name="window_position">center</property>
-    <signal name="destroy" handler="on_Main_destroy" swapped="no"/>
+    <signal name="destroy" handler="on_Main_destroy"/>
     <child>
       <widget class="GtkVBox" id="vbox2">
         <property name="visible">True</property>
@@ -36,7 +36,7 @@
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
                         <property name="use_stock">False</property>
-                        <signal name="activate" handler="on_cmdIface_activate" swapped="no"/>
+                        <signal name="activate" handler="on_cmdIface_activate"/>
                         <child internal-child="image">
                           <widget class="GtkImage" id="image1">
                             <property name="visible">True</property>
@@ -53,7 +53,7 @@
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
                         <property name="use_stock">False</property>
-                        <signal name="activate" handler="on_cmdArp_activate" swapped="no"/>
+                        <signal name="activate" handler="on_cmdArp_activate"/>
                         <child internal-child="image">
                           <widget class="GtkImage" id="image5">
                             <property name="visible">True</property>
@@ -72,7 +72,7 @@
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
                         <property name="use_stock">False</property>
-                        <signal name="activate" handler="on_cmdScan_activate" swapped="no"/>
+                        <signal name="activate" handler="on_cmdScan_activate"/>
                         <child internal-child="image">
                           <widget class="GtkImage" id="image2">
                             <property name="visible">True</property>
@@ -89,7 +89,7 @@
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
                         <property name="use_stock">False</property>
-                        <signal name="activate" handler="on_cmdStrip_activate" swapped="no"/>
+                        <signal name="activate" handler="on_cmdStrip_activate"/>
                         <child internal-child="image">
                           <widget class="GtkImage" id="image3">
                             <property name="visible">True</property>
@@ -106,7 +106,7 @@
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
                         <property name="use_stock">False</property>
-                        <signal name="activate" handler="on_cmdSniff_activate" swapped="no"/>
+                        <signal name="activate" handler="on_cmdSniff_activate"/>
                         <child internal-child="image">
                           <widget class="GtkImage" id="image4">
                             <property name="visible">True</property>
@@ -123,7 +123,7 @@
                         <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">DNS Spoofing</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_cmdSpoof_activate" swapped="no"/>
+                        <signal name="activate" handler="on_cmdSpoof_activate"/>
                       </widget>
                     </child>
                   </widget>
@@ -146,7 +146,7 @@
                 <property name="use_action_appearance">False</property>
                 <property name="label" translatable="yes">About</property>
                 <property name="use_underline">True</property>
-                <signal name="activate" handler="on_cmdAbout_activate" swapped="no"/>
+                <signal name="activate" handler="on_cmdAbout_activate"/>
               </widget>
             </child>
           </widget>
@@ -175,7 +175,7 @@
                       <widget class="GtkTreeView" id="lstNetwork">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <signal name="row_activated" handler="on_lstNetwork_row_activated" swapped="no"/>
+                        <signal name="row_activated" handler="on_lstNetwork_row_activated"/>
                       </widget>
                     </child>
                   </widget>
@@ -201,7 +201,7 @@
                       <widget class="GtkTreeView" id="lstTargets">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <signal name="row_activated" handler="on_lstTargets_row_activated" swapped="no"/>
+                        <signal name="row_activated" handler="on_lstTargets_row_activated"/>
                       </widget>
                     </child>
                   </widget>
@@ -277,8 +277,8 @@
                       <widget class="GtkTreeView" id="lstPlugins">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <signal name="button_press_event" handler="on_lstPlugins_button_press_event" swapped="no"/>
-                        <signal name="row_activated" handler="on_lstPlugins_row_activated" swapped="no"/>
+                        <signal name="button_press_event" handler="on_lstPlugins_button_press_event"/>
+                        <signal name="row_activated" handler="on_lstPlugins_row_activated"/>
                       </widget>
                     </child>
                   </widget>
@@ -308,8 +308,8 @@
                       <widget class="GtkTreeView" id="lstDns">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <signal name="button_press_event" handler="on_lstDns_button_press_event" swapped="no"/>
-                        <signal name="row_activated" handler="on_lstDns_row_activated" swapped="no"/>
+                        <signal name="button_press_event" handler="on_lstDns_button_press_event"/>
+                        <signal name="row_activated" handler="on_lstDns_row_activated"/>
                       </widget>
                     </child>
                   </widget>
@@ -1409,7 +1409,7 @@ Public License instead of this License.  But first, please read
                 <property name="receives_default">True</property>
                 <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
-                <signal name="clicked" handler="on_cmdOk_clicked" swapped="no"/>
+                <signal name="clicked" handler="on_cmdOk_clicked"/>
               </widget>
               <packing>
                 <property name="expand">False</property>
