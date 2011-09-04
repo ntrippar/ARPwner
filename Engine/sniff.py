@@ -45,6 +45,6 @@ class sniff(threading.Thread):
                                     pass
                     except(AttributeError):
                         pass
-                except:
-                    pass
+            except:
+                pass
 
