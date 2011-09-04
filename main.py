@@ -85,8 +85,10 @@ class arpGui:
             if self.httpspwn.running == True:
                 self.httpspwn.stop()
             gtk.main_quit()
+            exit()
         except(AttributeError):
             gtk.main_quit()
+            exit()
 
     def httpStrip(self,widget):
         if (self.httpspwn.running == False):
