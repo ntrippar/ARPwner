@@ -23,25 +23,28 @@ class sniff(threading.Thread):
     def run(self):
         for ts, pkt in self.pc:
             if(self.running == False): break
-            packet = dpkt.ethernet.Ethernet(pkt)
+            try:
+                packet = dpkt.ethernet.Ethernet(pkt)
 
-            if packet.type == dpkt.ethernet.ETH_TYPE_IP:
-                packet = packet.data
-                if self.dnsSpoof != None and self.dnsSpoof.running == True:
-                    if packet.p == 17:
-                        udp = packet.data
-                        if udp.dport == 53:
-                            self.dnsSpoof.analyze(packet)
+                if packet.type == dpkt.ethernet.ETH_TYPE_IP:
+                    packet = packet.data
+                    if self.dnsSpoof != None and self.dnsSpoof.running == True:
+                        if packet.p == 17:
+                            udp = packet.data
+                            if udp.dport == 53:
+                                self.dnsSpoof.analyze(packet)
 
-                #plugin check and call
-                try:
-                    for protocol in self.protocols:
-                        if protocol.PROPERTY['ENABLED'] == True:
-                            try:
-                                if (packet.data.dport == protocol.PROPERTY['DPORT'] or packet.data.sport==protocol.PROPERTY['SPORT']):
-                                    protocol.plugin(packet,self.logger).analyze()
-                            except(KeyError):
-                                pass
-                except(AttributeError):
+                    #plugin check and call
+                    try:
+                        for protocol in self.protocols:
+                            if protocol.PROPERTY['ENABLED'] == True:
+                                try:
+                                    if (packet.data.dport == protocol.PROPERTY['DPORT'] or packet.data.sport==protocol.PROPERTY['SPORT']):
+                                        protocol.plugin(packet,self.logger).analyze()
+                                except(KeyError):
+                                    pass
+                    except(AttributeError):
+                        pass
+                except:
                     pass
 
